@@ -1,0 +1,224 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Review{% endblock %}
+{% block topbar_label %}Final Step{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page" style="max-width:820px;">
+
+  <div class="form-page-header">
+    <span class="section-label">Final Review</span>
+    <h2>Resume Readiness Check</h2>
+    <p>Review your progress before downloading or previewing your resume.</p>
+  </div>
+
+  <!-- Completion -->
+  <div class="card" style="margin-bottom:2rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+      <strong style="font-size:1.05rem;">Overall Completion</strong>
+      {% if completion == 100 %}
+        <span style="font-size:1.35rem; font-weight:800; color:var(--green);">{{ completion }}%</span>
+      {% elif completion >= 60 %}
+        <span style="font-size:1.35rem; font-weight:800; color:#a78bfa;">{{ completion }}%</span>
+      {% else %}
+        <span style="font-size:1.35rem; font-weight:800; color:var(--amber);">{{ completion }}%</span>
+      {% endif %}
+    </div>
+    <div class="progress-track" style="height:10px;">
+      <div class="progress-fill" style="width:{{ completion }}%"></div>
+    </div>
+    <p style="margin-top:0.5rem; font-size:0.8rem;">
+      {% if completion == 100 %}
+        ✓ Core information complete. Your resume is ready to export.
+      {% elif completion >= 60 %}
+        Good progress! Add missing core sections to strengthen your resume.
+      {% else %}
+        Keep going — add more sections to complete your resume.
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- Core Sections -->
+  <div style="margin-bottom:1rem;">
+    <span class="section-label" style="display:block; margin-bottom:0.75rem;">Core Information</span>
+    <div class="review-grid">
+
+      <!-- Personal Details -->
+      {% if resume.full_name and resume.email %}
+        <div class="review-item">
+          <div class="review-status status-done" aria-label="Complete">✓</div>
+          <div class="review-item-body">
+            <label>Personal Details</label>
+            <span>{{ resume.full_name }}</span>
+          </div>
+          <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Edit</a>
+        </div>
+      {% else %}
+        <div class="review-item">
+          <div class="review-status status-empty" aria-label="Incomplete">○</div>
+          <div class="review-item-body">
+            <label>Personal Details</label>
+            <span>Not added</span>
+          </div>
+          <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Add</a>
+        </div>
+      {% endif %}
+
+      <!-- Education -->
+      {% if resume.education.exists %}
+        <div class="review-item">
+          <div class="review-status status-done" aria-label="Complete">✓</div>
+          <div class="review-item-body">
+            <label>Education</label>
+            <span>{{ resume.education.count }} entr{% if resume.education.count == 1 %}y{% else %}ies{% endif %}</span>
+          </div>
+          <a href="{% url 'add_education' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Edit</a>
+        </div>
+      {% else %}
+        <div class="review-item">
+          <div class="review-status status-empty" aria-label="Incomplete">○</div>
+          <div class="review-item-body">
+            <label>Education</label>
+            <span>Not added</span>
+          </div>
+          <a href="{% url 'add_education' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Add</a>
+        </div>
+      {% endif %}
+
+      <!-- Skills -->
+      {% if resume.skills.exists %}
+        <div class="review-item">
+          <div class="review-status status-done" aria-label="Complete">✓</div>
+          <div class="review-item-body">
+            <label>Skills</label>
+            <span>{{ resume.skills.count }} skill{% if resume.skills.count != 1 %}s{% endif %}</span>
+          </div>
+          <a href="{% url 'add_skill' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Edit</a>
+        </div>
+      {% else %}
+        <div class="review-item">
+          <div class="review-status status-empty" aria-label="Incomplete">○</div>
+          <div class="review-item-body">
+            <label>Skills</label>
+            <span>Not added</span>
+          </div>
+          <a href="{% url 'add_skill' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Add</a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <!-- Optional Sections -->
+  <div style="margin-bottom:2rem;">
+    <span class="section-label" style="display:block; margin-bottom:0.75rem;">Optional Sections</span>
+    <div class="review-grid">
+
+      <!-- Experience -->
+      {% if resume.experience.exists %}
+        <div class="review-item">
+          <div class="review-status status-done">✓</div>
+          <div class="review-item-body">
+            <label>Experience <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>{{ resume.experience.count }} entr{% if resume.experience.count == 1 %}y{% else %}ies{% endif %}</span>
+          </div>
+          <a href="{% url 'add_experience' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Edit</a>
+        </div>
+      {% else %}
+        <div class="review-item">
+          <div class="review-status status-opt">+</div>
+          <div class="review-item-body">
+            <label>Experience <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>Not added — that's OK</span>
+          </div>
+          <a href="{% url 'add_experience' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Add</a>
+        </div>
+      {% endif %}
+
+      <!-- Projects -->
+      {% if resume.projects.exists %}
+        <div class="review-item">
+          <div class="review-status status-done">✓</div>
+          <div class="review-item-body">
+            <label>Projects <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>{{ resume.projects.count }} project{% if resume.projects.count != 1 %}s{% endif %}</span>
+          </div>
+          <a href="{% url 'add_project' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Edit</a>
+        </div>
+      {% else %}
+        <div class="review-item">
+          <div class="review-status status-opt">+</div>
+          <div class="review-item-body">
+            <label>Projects <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>Not added — that's OK</span>
+          </div>
+          <a href="{% url 'add_project' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Add</a>
+        </div>
+      {% endif %}
+
+      <!-- LinkedIn -->
+      {% if resume.linkedin %}
+        <div class="review-item">
+          <div class="review-status status-done">✓</div>
+          <div class="review-item-body">
+            <label>LinkedIn <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>Added</span>
+          </div>
+          <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Edit</a>
+        </div>
+      {% else %}
+        <div class="review-item">
+          <div class="review-status status-opt">+</div>
+          <div class="review-item-body">
+            <label>LinkedIn <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>Not added</span>
+          </div>
+          <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Add</a>
+        </div>
+      {% endif %}
+
+      <!-- GitHub -->
+      {% if resume.github %}
+        <div class="review-item">
+          <div class="review-status status-done">✓</div>
+          <div class="review-item-body">
+            <label>GitHub <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>Added</span>
+          </div>
+          <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Edit</a>
+        </div>
+      {% else %}
+        <div class="review-item">
+          <div class="review-status status-opt">+</div>
+          <div class="review-item-body">
+            <label>GitHub <span style="font-weight:400; color:var(--text-3);">(optional)</span></label>
+            <span>Not added</span>
+          </div>
+          <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm" style="margin-left:auto;">Add</a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <!-- Export Actions -->
+  <div class="card card-highlight">
+    <strong style="display:block; margin-bottom:0.5rem; font-size:1.05rem;">
+      {% if completion == 100 %}✓ Resume Ready — Choose Export Format{% else %}Export Options{% endif %}
+    </strong>
+    <p style="margin-bottom:1.25rem; font-size:0.875rem;">
+      {% if completion < 100 %}
+        Your core resume may be incomplete, but you can still preview and export what you have.
+      {% else %}
+        Your core resume is complete. Preview it or download in your preferred format.
+      {% endif %}
+    </p>
+    <div class="review-actions">
+      <a href="{% url 'preview' %}" class="btn btn-primary">Preview Resume</a>
+      <a href="{% url 'download_docx' %}" class="btn btn-outline">↓ Download DOCX</a>
+      <a href="{% url 'preview' %}" class="btn btn-ghost" target="_blank" rel="noopener">Print as PDF ↗</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

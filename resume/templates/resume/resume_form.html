@@ -1,0 +1,90 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Personal Details{% endblock %}
+{% block topbar_label %}Step 1 of 5{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page">
+
+  <div class="form-page-header">
+    <span class="section-label">Step 1 — Personal Details</span>
+    <h2>Your Contact Information</h2>
+    <p>This information will appear at the top of your resume. Only include what you're comfortable sharing.</p>
+  </div>
+
+  <div class="form-card">
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="form-error" role="alert">
+          {% for e in form.non_field_errors %}{{ e }}{% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Full Name -->
+      <div class="form-group">
+        <label for="{{ form.full_name.id_for_label }}">Full Name <span style="color:var(--red);">*</span></label>
+        {{ form.full_name }}
+        {% if form.full_name.errors %}<span class="help-text" style="color:var(--red);">{{ form.full_name.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <!-- Email + Phone -->
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.email.id_for_label }}">Email Address <span style="color:var(--red);">*</span></label>
+          {{ form.email }}
+          {% if form.email.errors %}<span class="help-text" style="color:var(--red);">{{ form.email.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.phone.id_for_label }}">Phone Number <span style="color:var(--red);">*</span></label>
+          {{ form.phone }}
+          {% if form.phone.errors %}<span class="help-text" style="color:var(--red);">{{ form.phone.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <label for="{{ form.address.id_for_label }}">Location <span style="color:var(--red);">*</span></label>
+        {{ form.address }}
+        <span class="help-text">City and country is enough. e.g. "Bangalore, India"</span>
+        {% if form.address.errors %}<span class="help-text" style="color:var(--red);">{{ form.address.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <!-- LinkedIn + GitHub -->
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.linkedin.id_for_label }}">LinkedIn <span class="optional">(optional)</span></label>
+          {{ form.linkedin }}
+          {% if form.linkedin.errors %}<span class="help-text" style="color:var(--red);">{{ form.linkedin.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.github.id_for_label }}">GitHub <span class="optional">(optional)</span></label>
+          {{ form.github }}
+          {% if form.github.errors %}<span class="help-text" style="color:var(--red);">{{ form.github.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="form-group">
+        <label for="{{ form.summary.id_for_label }}">Professional Summary <span style="color:var(--red);">*</span></label>
+        {{ form.summary }}
+        <span class="help-text">2–4 sentences highlighting your key strengths and goals.</span>
+        {% if form.summary.errors %}<span class="help-text" style="color:var(--red);">{{ form.summary.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="submit" name="action" value="continue" class="btn btn-primary">
+          Save &amp; Continue → Education
+        </button>
+        <button type="submit" name="action" value="save" class="btn btn-outline">
+          Save &amp; Exit
+        </button>
+        <a href="{% url 'dashboard' %}" class="btn btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

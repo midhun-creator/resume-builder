@@ -1,0 +1,94 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Experience{% endblock %}
+{% block topbar_label %}Step 3 of 5{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page">
+
+  <div class="form-page-header">
+    <span class="section-label">Step 3 — Experience <span style="color:var(--text-3); font-weight:400;">(Optional)</span></span>
+    <h2>Professional Experience</h2>
+    <p>Add your work experience, internships, or part-time roles. This section is optional — students without experience can skip to Skills.</p>
+  </div>
+
+  <!-- Existing Entries -->
+  {% if entries %}
+  <div class="entry-list" aria-label="Experience entries">
+    {% for exp in entries %}
+    <div class="entry-item">
+      <div class="entry-item-body">
+        <h4>{{ exp.job_title }} at {{ exp.company }}</h4>
+        <p>{{ exp.start_date }} – {{ exp.end_date }}</p>
+      </div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <a href="{% url 'edit_experience' exp.pk %}" class="btn btn-outline btn-sm">Edit</a>
+        <form class="entry-delete-form" action="{% url 'delete_experience' exp.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm" aria-label="Delete {{ exp.job_title }}">Remove</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Add Form -->
+  <div class="form-card">
+    <p class="section-label" style="margin-bottom:1rem;">Add Experience Entry</p>
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="form-error" role="alert">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+      {% endif %}
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.company.id_for_label }}">Company / Organisation</label>
+          {{ form.company }}
+          {% if form.company.errors %}<span class="help-text" style="color:var(--red);">{{ form.company.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.job_title.id_for_label }}">Job Title / Role</label>
+          {{ form.job_title }}
+          {% if form.job_title.errors %}<span class="help-text" style="color:var(--red);">{{ form.job_title.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+          {{ form.start_date }}
+          {% if form.start_date.errors %}<span class="help-text" style="color:var(--red);">{{ form.start_date.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.end_date.id_for_label }}">End Date</label>
+          {{ form.end_date }}
+          {% if form.end_date.errors %}<span class="help-text" style="color:var(--red);">{{ form.end_date.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">Description</label>
+        {{ form.description }}
+        <span class="help-text">Key responsibilities, achievements, and technologies used.</span>
+        {% if form.description.errors %}<span class="help-text" style="color:var(--red);">{{ form.description.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" name="action" value="add" class="btn btn-outline btn-sm">+ Add Another</button>
+        <button type="submit" name="action" value="continue" class="btn btn-primary">
+          Save &amp; Continue → Skills
+        </button>
+        <a href="{% url 'add_skill' %}" class="btn btn-ghost">Skip for now →</a>
+      </div>
+    </form>
+  </div>
+
+  <div style="margin-top:1rem;">
+    <a href="{% url 'add_education' %}" class="btn btn-ghost btn-sm">← Back to Education</a>
+  </div>
+
+</div>
+{% endblock %}

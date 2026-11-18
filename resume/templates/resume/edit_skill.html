@@ -1,0 +1,45 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Edit Skill{% endblock %}
+{% block topbar_label %}Step 4 of 5{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page">
+
+  <div class="form-page-header">
+    <span class="section-label">Edit Entry</span>
+    <h2>Edit Skill</h2>
+  </div>
+
+  <div class="form-card">
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="form-error" role="alert">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+      {% endif %}
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.name.id_for_label }}">Skill Name</label>
+          {{ form.name }}
+          <span class="help-text">e.g. Python, Communication, Photoshop</span>
+          {% if form.name.errors %}<span class="help-text" style="color:var(--red);">{{ form.name.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.level.id_for_label }}">Proficiency <span class="optional">(optional)</span></label>
+          {{ form.level }}
+          <span class="help-text">e.g. Beginner / Intermediate / Advanced</span>
+          {% if form.level.errors %}<span class="help-text" style="color:var(--red);">{{ form.level.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'add_skill' %}" class="btn btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

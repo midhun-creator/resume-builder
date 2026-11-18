@@ -1,0 +1,56 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Edit Project{% endblock %}
+{% block topbar_label %}Step 5 of 5{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page">
+
+  <div class="form-page-header">
+    <span class="section-label">Edit Entry</span>
+    <h2>Edit Project</h2>
+  </div>
+
+  <div class="form-card">
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="form-error" role="alert">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Project Name</label>
+        {{ form.title }}
+        {% if form.title.errors %}<span class="help-text" style="color:var(--red);">{{ form.title.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.technologies.id_for_label }}">Technologies Used</label>
+        {{ form.technologies }}
+        {% if form.technologies.errors %}<span class="help-text" style="color:var(--red);">{{ form.technologies.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.project_url.id_for_label }}">Project Link <span class="optional">(optional)</span></label>
+        {{ form.project_url }}
+        <span class="help-text">GitHub repo, live demo, or any relevant URL.</span>
+        {% if form.project_url.errors %}<span class="help-text" style="color:var(--red);">{{ form.project_url.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">Description</label>
+        {{ form.description }}
+        <span class="help-text">What the project does, your role, and what you achieved.</span>
+        {% if form.description.errors %}<span class="help-text" style="color:var(--red);">{{ form.description.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'add_project' %}" class="btn btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,498 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About ResumeCraft</title>
+
+    <link rel="stylesheet"
+          href="{% static 'resume/style.css' %}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+
+
+<body class="about-body">
+
+    <!-- Background -->
+    <div class="about-background">
+
+        <div class="about-grid"></div>
+
+        <div class="about-orb about-orb-one"></div>
+        <div class="about-orb about-orb-two"></div>
+        <div class="about-orb about-orb-three"></div>
+
+    </div>
+
+
+    <!-- Navigation -->
+    <nav class="about-nav">
+
+        <a href="{% url 'dashboard' %}"
+           class="about-logo">
+
+            <span>R</span>
+
+            <div>
+                <strong>ResumeCraft</strong>
+                <small>Professional Resume Builder</small>
+            </div>
+
+        </a>
+
+
+        <div class="about-nav-links">
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'resume_create' %}">
+                Create Resume
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Hero Section -->
+    <main class="about-container">
+
+        <section class="about-hero">
+
+            <div class="about-hero-content">
+
+                <span class="about-badge">
+                    ✦ ABOUT RESUMECRAFT
+                </span>
+
+                <h1>
+                    Build a resume
+                    <span>that gets noticed.</span>
+                </h1>
+
+                <p>
+                    ResumeCraft is a modern resume-building platform
+                    designed to help students, graduates and professionals
+                    create impressive resumes quickly and easily.
+                </p>
+
+
+                <div class="about-buttons">
+
+                    <a href="{% url 'resume_create' %}"
+                       class="about-primary-btn">
+
+                        Create My Resume
+                        <span>→</span>
+
+                    </a>
+
+                    <a href="{% url 'dashboard' %}"
+                       class="about-secondary-btn">
+
+                        Go to Dashboard
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Hero Visual -->
+            <div class="about-visual">
+
+                <div class="visual-glow"></div>
+
+                <div class="mini-resume">
+
+                    <div class="mini-header">
+
+                        <div class="mini-avatar">
+                            R
+                        </div>
+
+                        <div class="mini-lines">
+
+                            <span class="line-large"></span>
+                            <span class="line-small"></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mini-section">
+
+                        <span class="mini-title">
+                            PROFESSIONAL SUMMARY
+                        </span>
+
+                        <div class="mini-text"></div>
+                        <div class="mini-text short"></div>
+
+                    </div>
+
+
+                    <div class="mini-section">
+
+                        <span class="mini-title">
+                            EXPERIENCE
+                        </span>
+
+                        <div class="mini-experience">
+
+                            <span></span>
+                            <div>
+                                <b></b>
+                                <small></small>
+                            </div>
+
+                        </div>
+
+                        <div class="mini-experience">
+
+                            <span></span>
+                            <div>
+                                <b></b>
+                                <small></small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mini-section">
+
+                        <span class="mini-title">
+                            SKILLS
+                        </span>
+
+                        <div class="mini-skills">
+
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Stats -->
+        <section class="about-stats">
+
+            <div class="stat-card">
+
+                <span class="stat-icon">⚡</span>
+
+                <strong>Simple</strong>
+
+                <p>
+                    Easy-to-use resume creation process
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-icon">✦</span>
+
+                <strong>Professional</strong>
+
+                <p>
+                    Modern layouts designed for careers
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-icon">↗</span>
+
+                <strong>Career Ready</strong>
+
+                <p>
+                    Create resumes ready for opportunities
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Features -->
+        <section class="about-features"
+                 id="features">
+
+            <div class="section-intro">
+
+                <span>
+                    WHY RESUMECRAFT
+                </span>
+
+                <h2>
+                    Everything you need
+                    to build your resume.
+                </h2>
+
+                <p>
+                    From your education and experience to skills and
+                    projects, ResumeCraft keeps everything organized
+                    in one simple platform.
+                </p>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        ✎
+                    </div>
+
+                    <h3>
+                        Easy Resume Creation
+                    </h3>
+
+                    <p>
+                        Add your personal details, education,
+                        experience, skills and projects through
+                        simple forms.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        ◈
+                    </div>
+
+                    <h3>
+                        Professional Design
+                    </h3>
+
+                    <p>
+                        Present your career information in a clean,
+                        modern and professional resume layout.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        Organized Information
+                    </h3>
+
+                    <p>
+                        Keep education, work experience, skills and
+                        projects organized in one place.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        ↓
+                    </div>
+
+                    <h3>
+                        Print & PDF Ready
+                    </h3>
+
+                    <p>
+                        Preview your resume and easily print or save
+                        it as a PDF when you're ready to apply.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- How it works -->
+        <section class="about-process">
+
+            <div class="section-intro">
+
+                <span>
+                    HOW IT WORKS
+                </span>
+
+                <h2>
+                    Create your resume
+                    in three steps.
+                </h2>
+
+            </div>
+
+
+            <div class="process-grid">
+
+                <div class="process-card">
+
+                    <div class="process-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Add Your Details
+                    </h3>
+
+                    <p>
+                        Enter your personal information and
+                        professional summary.
+                    </p>
+
+                </div>
+
+
+                <div class="process-line"></div>
+
+
+                <div class="process-card">
+
+                    <div class="process-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Build Your Profile
+                    </h3>
+
+                    <p>
+                        Add education, experience, skills and
+                        projects to your resume.
+                    </p>
+
+                </div>
+
+
+                <div class="process-line"></div>
+
+
+                <div class="process-card">
+
+                    <div class="process-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Preview & Export
+                    </h3>
+
+                    <p>
+                        Preview your completed resume and save
+                        it as a professional PDF.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CTA -->
+        <section class="about-cta">
+
+            <div>
+
+                <span>
+                    READY TO GET STARTED?
+                </span>
+
+                <h2>
+                    Your next opportunity
+                    starts here.
+                </h2>
+
+                <p>
+                    Build a resume that represents your skills,
+                    experience and ambitions.
+                </p>
+
+            </div>
+
+
+            <a href="{% url 'resume_create' %}"
+               class="about-cta-btn">
+
+                Start Building
+                <span>→</span>
+
+            </a>
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="about-footer">
+
+            <div>
+
+                <strong>
+                    ResumeCraft
+                </strong>
+
+                <span>
+                    Professional Resume Builder
+                </span>
+
+            </div>
+
+            <p>
+                © 2026 ResumeCraft. Build your future.
+            </p>
+
+        </footer>
+
+    </main>
+
+</body>
+</html>
+```

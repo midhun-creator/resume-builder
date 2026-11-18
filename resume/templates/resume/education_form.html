@@ -1,0 +1,101 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Education{% endblock %}
+{% block topbar_label %}Step 2 of 5{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page">
+
+  <div class="form-page-header">
+    <span class="section-label">Step 2 — Education</span>
+    <h2>Academic Background</h2>
+    <p>Add your degrees, diplomas, or qualifications. You can add multiple entries.</p>
+  </div>
+
+  <!-- Existing Entries -->
+  {% if entries %}
+  <div class="entry-list" aria-label="Education entries">
+    {% for edu in entries %}
+    <div class="entry-item">
+      <div class="entry-item-body">
+        <h4>{{ edu.degree }}{% if edu.field %} in {{ edu.field }}{% endif %}</h4>
+        <p>{{ edu.institution }} &nbsp;·&nbsp; {{ edu.start_year }} – {{ edu.end_year }}{% if edu.grade %} &nbsp;·&nbsp; {{ edu.grade }}{% endif %}</p>
+      </div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <a href="{% url 'edit_education' edu.pk %}" class="btn btn-outline btn-sm">Edit</a>
+        <form class="entry-delete-form" action="{% url 'delete_education' edu.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm" aria-label="Delete {{ edu.degree }}">Remove</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Add Form -->
+  <div class="form-card">
+    <p class="section-label" style="margin-bottom:1rem;">Add Another Entry</p>
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="form-error" role="alert">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="{{ form.institution.id_for_label }}">Institution <span style="color:var(--red);">*</span></label>
+        {{ form.institution }}
+        {% if form.institution.errors %}<span class="help-text" style="color:var(--red);">{{ form.institution.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.degree.id_for_label }}">Degree <span style="color:var(--red);">*</span></label>
+          {{ form.degree }}
+          {% if form.degree.errors %}<span class="help-text" style="color:var(--red);">{{ form.degree.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.field.id_for_label }}">Field of Study <span style="color:var(--red);">*</span></label>
+          {{ form.field }}
+          {% if form.field.errors %}<span class="help-text" style="color:var(--red);">{{ form.field.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.start_year.id_for_label }}">Start Year <span style="color:var(--red);">*</span></label>
+          {{ form.start_year }}
+          {% if form.start_year.errors %}<span class="help-text" style="color:var(--red);">{{ form.start_year.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.end_year.id_for_label }}">End Year <span style="color:var(--red);">*</span></label>
+          {{ form.end_year }}
+          <span class="help-text">Use expected year if still studying.</span>
+          {% if form.end_year.errors %}<span class="help-text" style="color:var(--red);">{{ form.end_year.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.grade.id_for_label }}">Grade / GPA <span class="optional">(optional)</span></label>
+        {{ form.grade }}
+        {% if form.grade.errors %}<span class="help-text" style="color:var(--red);">{{ form.grade.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" name="action" value="add" class="btn btn-outline btn-sm">+ Add Another</button>
+        <button type="submit" name="action" value="continue" class="btn btn-primary">
+          Save &amp; Continue → Experience
+        </button>
+        <a href="{% url 'dashboard' %}" class="btn btn-ghost">Exit to Dashboard</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Back nav -->
+  <div style="margin-top:1rem;">
+    <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm">← Back to Personal Details</a>
+  </div>
+
+</div>
+{% endblock %}

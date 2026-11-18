@@ -1,0 +1,236 @@
+{% extends 'resume/base.html' %}
+{% load static %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+<div class="app-layout" id="appLayout">
+
+  <!-- ═══ SIDEBAR (visible by default, collapsible) ═══ -->
+  <aside class="sidebar" id="appSidebar" aria-label="Workspace navigation">
+
+    <a href="{% url 'dashboard' %}" class="sidebar-brand">
+      <div class="nav-logo">R</div>
+      <span class="sidebar-brand-text">ResumeCraft</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      {% if completion is not None %}
+      <div class="sidebar-progress">
+        <div class="sidebar-progress-label">
+          <span>Resume Progress</span>
+          <span>{{ completion }}%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width:{{ completion }}%"></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <p class="nav-section-label">Workspace</p>
+
+      {% with url_name=request.resolver_match.url_name %}
+
+      <a href="{% url 'dashboard' %}"
+         class="side-link{% if url_name == 'dashboard' %} active{% endif %}"
+         title="Dashboard">
+        <span class="side-icon" aria-hidden="true">▦</span>
+        <span class="side-label">Dashboard</span>
+      </a>
+
+      <a href="{% url 'resume_create' %}"
+         class="side-link{% if url_name == 'resume_create' %} active{% endif %}"
+         title="Personal Details">
+        <span class="side-icon" aria-hidden="true">✎</span>
+        <span class="side-label">Personal Details</span>
+      </a>
+
+      <a href="{% url 'add_education' %}"
+         class="side-link{% if url_name == 'add_education' %} active{% endif %}"
+         title="Education">
+        <span class="side-icon" aria-hidden="true">🎓</span>
+        <span class="side-label">Education</span>
+      </a>
+
+      <a href="{% url 'add_experience' %}"
+         class="side-link{% if url_name == 'add_experience' %} active{% endif %}"
+         title="Experience">
+        <span class="side-icon" aria-hidden="true">💼</span>
+        <span class="side-label">Experience</span>
+      </a>
+
+      <a href="{% url 'add_skill' %}"
+         class="side-link{% if url_name == 'add_skill' %} active{% endif %}"
+         title="Skills">
+        <span class="side-icon" aria-hidden="true">◆</span>
+        <span class="side-label">Skills</span>
+      </a>
+
+      <a href="{% url 'add_project' %}"
+         class="side-link{% if url_name == 'add_project' %} active{% endif %}"
+         title="Projects">
+        <span class="side-icon" aria-hidden="true">◈</span>
+        <span class="side-label">Projects</span>
+      </a>
+
+      <hr class="sidebar-sep">
+      <p class="nav-section-label">Resume</p>
+
+      <a href="{% url 'review' %}"
+         class="side-link{% if url_name == 'review' %} active{% endif %}"
+         title="Review">
+        <span class="side-icon" aria-hidden="true">✓</span>
+        <span class="side-label">Review</span>
+      </a>
+
+      <a href="{% url 'preview' %}"
+         class="side-link{% if url_name == 'preview' %} active{% endif %}"
+         title="Preview">
+        <span class="side-icon" aria-hidden="true">▤</span>
+        <span class="side-label">Preview</span>
+      </a>
+
+      <a href="{% url 'download_docx' %}" class="side-link" title="Download DOCX">
+        <span class="side-icon" aria-hidden="true">↓</span>
+        <span class="side-label">Download DOCX</span>
+      </a>
+
+      {% endwith %}
+    </nav>
+
+    <div class="sidebar-bottom">
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="sidebar-logout" aria-label="Log out" title="Logout">
+          <span class="side-icon" aria-hidden="true">↪</span>
+          <span class="side-label">Logout</span>
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="app-main" id="appMain">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <!-- Hamburger toggle -->
+        <button
+          class="hamburger-btn"
+          id="sidebarToggle"
+          aria-label="Toggle navigation"
+          aria-expanded="true"
+          aria-controls="appSidebar"
+          title="Toggle sidebar">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+        <div class="topbar-page">
+          <span class="topbar-label">{% block topbar_label %}Workspace{% endblock %}</span>
+          <span class="topbar-title">{% block page_title %}Dashboard{% endblock %}</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="user-pill">
+          <div class="user-avatar" aria-hidden="true">{{ request.user.username|first|upper }}</div>
+          <div>
+            <strong>{{ request.user.username }}</strong>
+            <small>Member</small>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-content">
+      {% block dashboard_content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Mobile overlay backdrop -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+</div>
+
+<script>
+/* ResumeCraft sidebar toggle — inline so it always runs */
+(function () {
+  var layout   = document.getElementById('appLayout');
+  var sidebar  = document.getElementById('appSidebar');
+  var toggle   = document.getElementById('sidebarToggle');
+  var backdrop = document.getElementById('sidebarBackdrop');
+
+  if (!layout || !sidebar || !toggle) return;
+
+  var MOBILE_BP = 768;
+  var KEY = 'rc_sb';
+
+  function isMobile() { return window.innerWidth <= MOBILE_BP; }
+  function isCollapsed() { return layout.classList.contains('sidebar-collapsed'); }
+
+  function collapse() {
+    layout.classList.add('sidebar-collapsed');
+    toggle.setAttribute('aria-expanded', 'false');
+    localStorage.setItem(KEY, '1');
+    if (backdrop) backdrop.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  function expand() {
+    layout.classList.remove('sidebar-collapsed');
+    toggle.setAttribute('aria-expanded', 'true');
+    localStorage.removeItem(KEY);
+    if (isMobile() && backdrop) {
+      backdrop.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  /* Click hamburger */
+  toggle.addEventListener('click', function () {
+    isCollapsed() ? expand() : collapse();
+  });
+
+  /* Click backdrop on mobile */
+  if (backdrop) {
+    backdrop.addEventListener('click', function () {
+      if (isMobile()) expand();
+    });
+  }
+
+  /* Escape key */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !isCollapsed()) { collapse(); toggle.focus(); }
+  });
+
+  /* Initial state */
+  if (isMobile()) {
+    collapse();
+  } else if (localStorage.getItem(KEY) === '1') {
+    layout.classList.add('sidebar-collapsed');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  /* else: desktop default = sidebar open, nothing to do */
+
+  /* Resize */
+  window.addEventListener('resize', function () {
+    if (isMobile()) {
+      if (!isCollapsed()) collapse();
+    } else {
+      if (backdrop) backdrop.classList.remove('visible');
+      document.body.style.overflow = '';
+      if (localStorage.getItem(KEY) === '1') {
+        layout.classList.add('sidebar-collapsed');
+        toggle.setAttribute('aria-expanded', 'false');
+      } else {
+        layout.classList.remove('sidebar-collapsed');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    }
+  });
+})();
+</script>
+
+{% endblock %}

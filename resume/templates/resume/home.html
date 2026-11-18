@@ -1,0 +1,181 @@
+{% extends 'resume/base.html' %}
+{% load static %}
+
+{% block title %}ResumeCraft | Build a Professional Resume{% endblock %}
+{% block body_class %}{% endblock %}
+
+{% block content %}
+
+<!-- Animated background -->
+<div class="orb-bg" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+<div class="particles-container" aria-hidden="true">
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+  <div class="particle p5"></div>
+  <div class="particle p6"></div>
+  <div class="particle p7"></div>
+</div>
+<div class="home-grid" aria-hidden="true"></div>
+
+<!-- Navbar -->
+<header>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="{% url 'home' %}" class="nav-brand" aria-label="ResumeCraft home">
+      <div class="nav-logo" aria-hidden="true">R</div>
+      <span>ResumeCraft</span>
+    </a>
+
+    <div class="nav-links" role="list">
+      <a href="#features" role="listitem">Features</a>
+      <a href="#how-it-works" role="listitem">How it works</a>
+    </div>
+
+    <div class="nav-actions">
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard →</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-ghost">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-primary">Get Started →</a>
+      {% endif %}
+      <button class="nav-toggle" aria-label="Open mobile menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ─── Hero ────────────────────────────────────────── -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="hero-badge">
+      <span class="dot" aria-hidden="true"></span>
+      Build your career. Build your future.
+    </div>
+
+    <h1 class="hero-title" id="hero-heading">
+      Create a resume<br>that gets noticed.
+    </h1>
+
+    <p class="hero-sub">
+      Build a professional, modern, ATS-friendly resume in minutes.
+      Showcase your skills, experience, and achievements with confidence.
+    </p>
+
+    <div class="hero-ctas">
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">Continue Building →</a>
+        <a href="{% url 'preview' %}" class="btn btn-outline btn-lg">Preview Resume</a>
+      {% else %}
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Create My Resume →</a>
+        <a href="{% url 'login' %}" class="btn btn-outline btn-lg">Sign In</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ─── Features ─────────────────────────────────────── -->
+  <section class="section" id="features" aria-labelledby="features-heading">
+    <div class="section-header reveal">
+      <span class="section-label">What you get</span>
+      <h2 class="section-title" id="features-heading">Everything to stand out.</h2>
+      <p class="section-sub">Simple, powerful tools designed to create a resume that makes a strong first impression.</p>
+    </div>
+
+    <div class="feature-grid">
+
+      <div class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">✦</div>
+        <h3>Professional Design</h3>
+        <p>A clean, modern resume layout that looks sharp on every screen and prints flawlessly on A4 paper.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">⚡</div>
+        <h3>Build in Minutes</h3>
+        <p>Add your education, experience, skills, and projects through a guided step-by-step workflow.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">✓</div>
+        <h3>ATS Friendly</h3>
+        <p>Structured layout with standard headings and clean formatting—easy for both recruiters and tracking systems to read.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">↓</div>
+        <h3>PDF &amp; DOCX Export</h3>
+        <p>Download your finished resume as a print-ready PDF or an editable Word document anytime.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ─── How It Works ─────────────────────────────────── -->
+  <section class="section" id="how-it-works" aria-labelledby="hiw-heading">
+    <div class="section-header reveal">
+      <span class="section-label">Simple process</span>
+      <h2 class="section-title" id="hiw-heading">From blank page to career ready.</h2>
+    </div>
+
+    <div class="workflow-steps">
+      <div class="workflow-step reveal">
+        <div class="step-num" aria-label="Step 1">01</div>
+        <h3>Create account</h3>
+        <p>Sign up in seconds. No credit card required.</p>
+      </div>
+
+      <div class="workflow-connector" aria-hidden="true"></div>
+
+      <div class="workflow-step reveal">
+        <div class="step-num" aria-label="Step 2">02</div>
+        <h3>Add your details</h3>
+        <p>Enter education, experience, skills, and projects.</p>
+      </div>
+
+      <div class="workflow-connector" aria-hidden="true"></div>
+
+      <div class="workflow-step reveal">
+        <div class="step-num" aria-label="Step 3">03</div>
+        <h3>Preview &amp; export</h3>
+        <p>Download PDF or DOCX and start applying.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ──────────────────────────────────────────── -->
+  <div class="cta-banner reveal">
+    <span class="section-label">Ready?</span>
+    <h2>Build your best resume today.</h2>
+    <p style="margin-bottom:2rem; max-width:500px; margin-left:auto; margin-right:auto;">
+      Professional. Clean. Export-ready. No experience required to get started.
+    </p>
+    {% if user.is_authenticated %}
+      <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard →</a>
+    {% else %}
+      <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Create My Resume →</a>
+    {% endif %}
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-brand">
+    <div class="nav-logo" style="width:24px;height:24px;font-size:0.75rem" aria-hidden="true">R</div>
+    <div>
+      <strong>ResumeCraft</strong>
+      <small>Professional Resume Builder</small>
+    </div>
+  </div>
+  <p>Build your resume. Showcase your potential.</p>
+  <p>&copy; 2026 ResumeCraft. All rights reserved.</p>
+</footer>
+
+{% endblock %}

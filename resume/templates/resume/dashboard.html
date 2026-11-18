@@ -1,0 +1,177 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Dashboard{% endblock %}
+{% block topbar_label %}Workspace{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- Welcome Banner -->
+<div class="card card-highlight" style="margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+  <div>
+    <span class="section-label" style="margin-bottom:0.25rem;">Your Career Workspace</span>
+    <h2 style="font-size:1.5rem; margin-bottom:0.25rem;">Welcome back, {{ request.user.username }}.</h2>
+    <p style="margin:0;">Keep building your professional profile — a complete resume makes a stronger impression.</p>
+  </div>
+  <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+    {% if resume %}
+      <a href="{% url 'preview' %}" class="btn btn-outline btn-sm">Preview</a>
+      <a href="{% url 'review' %}" class="btn btn-primary btn-sm">Continue Building →</a>
+    {% else %}
+      <a href="{% url 'resume_create' %}" class="btn btn-primary">Start My Resume →</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-icon-wrap ic-purple" aria-hidden="true">◈</div>
+    <div class="stat-text">
+      <small>Profile</small>
+      <strong>{% if resume %}Created{% else %}Not Started{% endif %}</strong>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon-wrap ic-blue" aria-hidden="true">▦</div>
+    <div class="stat-text">
+      <small>Status</small>
+      <strong>{% if resume %}In Progress{% else %}Getting Started{% endif %}</strong>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon-wrap ic-green" aria-hidden="true">✓</div>
+    <div class="stat-text">
+      <small>Account</small>
+      <strong>Active</strong>
+    </div>
+  </div>
+  {% if resume %}
+  <div class="stat-card">
+    <div class="stat-icon-wrap ic-amber" aria-hidden="true">★</div>
+    <div class="stat-text">
+      <small>Completion</small>
+      <strong>{{ completion }}%</strong>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Resume Sections -->
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+  <div>
+    <span class="section-label" style="display:block; margin-bottom:0.25rem;">Build Your Resume</span>
+    <h2 style="font-size:1.35rem; margin:0;">Resume Sections</h2>
+  </div>
+  {% if resume %}
+    <a href="{% url 'preview' %}" class="btn btn-outline btn-sm">Preview Resume →</a>
+  {% endif %}
+</div>
+
+{% if resume %}
+
+<!-- Profile Summary Card -->
+<div class="card" style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+  <div style="width:56px; height:56px; background:var(--bg-raised); border:2px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:700; color:var(--text-2); flex-shrink:0;" aria-hidden="true">
+    {{ resume.full_name|first|upper }}
+  </div>
+  <div>
+    <span class="section-label" style="display:block; margin-bottom:2px;">Your Resume</span>
+    <strong style="font-size:1.125rem;">{{ resume.full_name }}</strong>
+    <p style="margin:0; font-size:0.85rem;">{{ resume.email }}</p>
+  </div>
+  <div style="margin-left:auto;">
+    <a href="{% url 'resume_create' %}" class="btn btn-ghost btn-sm">Edit Details</a>
+  </div>
+</div>
+
+<!-- Section Cards -->
+<div class="workspace-grid">
+
+  <a href="{% url 'resume_create' %}" class="ws-card" aria-label="Edit Personal Details">
+    <div class="ws-card-head">
+      <div class="ws-icon ic-blue" aria-hidden="true">✎</div>
+      <h3>Personal Details</h3>
+    </div>
+    <p>Name, contact info, and professional summary.</p>
+    <div class="ws-card-foot">
+      <span>Edit details →</span>
+      <span class="ws-badge" style="color:var(--green);">✓ Done</span>
+    </div>
+  </a>
+
+  <a href="{% url 'add_education' %}" class="ws-card" aria-label="Manage Education">
+    <div class="ws-card-head">
+      <div class="ws-icon ic-purple" aria-hidden="true">🎓</div>
+      <h3>Education</h3>
+    </div>
+    <p>Academic qualifications and degrees.</p>
+    <div class="ws-card-foot">
+      <span>Add / Manage →</span>
+      <span class="ws-badge">{{ resume.education.count }} added</span>
+    </div>
+  </a>
+
+  <a href="{% url 'add_experience' %}" class="ws-card" aria-label="Manage Experience">
+    <div class="ws-card-head">
+      <div class="ws-icon ic-green" aria-hidden="true">💼</div>
+      <h3>Experience</h3>
+    </div>
+    <p>Work history and professional roles. <em style="font-size:0.78rem; color:var(--text-3);">(Optional)</em></p>
+    <div class="ws-card-foot">
+      <span>Add / Manage →</span>
+      <span class="ws-badge">{{ resume.experience.count }} added</span>
+    </div>
+  </a>
+
+  <a href="{% url 'add_skill' %}" class="ws-card" aria-label="Manage Skills">
+    <div class="ws-card-head">
+      <div class="ws-icon ic-amber" aria-hidden="true">◆</div>
+      <h3>Skills</h3>
+    </div>
+    <p>Technical and soft skills that make you stand out.</p>
+    <div class="ws-card-foot">
+      <span>Add / Manage →</span>
+      <span class="ws-badge">{{ resume.skills.count }} added</span>
+    </div>
+  </a>
+
+  <a href="{% url 'add_project' %}" class="ws-card" aria-label="Manage Projects">
+    <div class="ws-card-head">
+      <div class="ws-icon" style="background:rgba(236,72,153,0.1); color:#ec4899;" aria-hidden="true">◈</div>
+      <h3>Projects</h3>
+    </div>
+    <p>Personal or academic projects. <em style="font-size:0.78rem; color:var(--text-3);">(Optional)</em></p>
+    <div class="ws-card-foot">
+      <span>Add / Manage →</span>
+      <span class="ws-badge">{{ resume.projects.count }} added</span>
+    </div>
+  </a>
+
+  <a href="{% url 'review' %}" class="ws-card" aria-label="Review Resume">
+    <div class="ws-card-head">
+      <div class="ws-icon ic-purple" aria-hidden="true">✓</div>
+      <h3>Review &amp; Export</h3>
+    </div>
+    <p>Check completeness, preview, and download your resume.</p>
+    <div class="ws-card-foot">
+      <span>Go to review →</span>
+      <span class="ws-badge" style="color:var(--purple);">{{ completion }}% complete</span>
+    </div>
+  </a>
+
+</div>
+
+{% else %}
+
+<!-- Empty State -->
+<div class="empty-state">
+  <div class="empty-icon" aria-hidden="true">📄</div>
+  <span class="section-label">Your resume is waiting</span>
+  <h3>Let's build something great.</h3>
+  <p>You haven't created your resume yet. Start by adding your personal information — it only takes a minute.</p>
+  <a href="{% url 'resume_create' %}" class="btn btn-primary">Create My Resume →</a>
+</div>
+
+{% endif %}
+
+{% endblock %}

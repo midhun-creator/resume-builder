@@ -1,0 +1,80 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Skills{% endblock %}
+{% block topbar_label %}Step 4 of 5{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page">
+
+  <div class="form-page-header">
+    <span class="section-label">Step 4 — Skills</span>
+    <h2>Skills &amp; Expertise</h2>
+    <p>Add your technical and soft skills. Each skill can have a proficiency level. Add as many as are relevant.</p>
+  </div>
+
+  <!-- Existing Skills -->
+  {% if entries %}
+  <div class="entry-list" aria-label="Skills added">
+    {% for skill in entries %}
+    <div class="entry-item">
+      <div class="entry-item-body">
+        <h4>{{ skill.name }}</h4>
+        {% if skill.level %}<p>{{ skill.level }}</p>{% endif %}
+      </div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <a href="{% url 'edit_skill' skill.pk %}" class="btn btn-outline btn-sm">Edit</a>
+        <form class="entry-delete-form" action="{% url 'delete_skill' skill.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm" aria-label="Delete {{ skill.name }}">Remove</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state" style="margin-bottom:1.5rem; padding:1.5rem;">
+    <p style="margin:0; font-size:0.875rem;">No skills added yet. Add your first skill below.</p>
+  </div>
+  {% endif %}
+
+  <!-- Add Form -->
+  <div class="form-card">
+    <p class="section-label" style="margin-bottom:1rem;">Add a Skill</p>
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="form-error" role="alert">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+      {% endif %}
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="{{ form.name.id_for_label }}">Skill Name</label>
+          {{ form.name }}
+          <span class="help-text">e.g. Python, Communication, Photoshop</span>
+          {% if form.name.errors %}<span class="help-text" style="color:var(--red);">{{ form.name.errors|join:" " }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.level.id_for_label }}">Proficiency <span class="optional">(optional)</span></label>
+          {{ form.level }}
+          <span class="help-text">e.g. Beginner / Intermediate / Advanced</span>
+          {% if form.level.errors %}<span class="help-text" style="color:var(--red);">{{ form.level.errors|join:" " }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" name="action" value="add" class="btn btn-outline btn-sm">+ Add Another</button>
+        <button type="submit" name="action" value="continue" class="btn btn-primary">
+          Save &amp; Continue → Projects
+        </button>
+        <a href="{% url 'add_project' %}" class="btn btn-ghost">Skip to Projects →</a>
+      </div>
+    </form>
+  </div>
+
+  <div style="margin-top:1rem;">
+    <a href="{% url 'add_experience' %}" class="btn btn-ghost btn-sm">← Back to Experience</a>
+  </div>
+
+</div>
+{% endblock %}

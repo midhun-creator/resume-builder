@@ -1,0 +1,66 @@
+{% extends 'resume/base.html' %}
+{% load static %}
+
+{% block title %}Login | ResumeCraft{% endblock %}
+
+{% block content %}
+<div class="orb-bg" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
+<div class="home-grid" aria-hidden="true"></div>
+
+<div class="auth-layout">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <div class="nav-logo" aria-hidden="true">R</div>
+      <h1 style="font-size:1.6rem; margin-bottom:0.25rem;">Welcome back</h1>
+      <p>Sign in to your ResumeCraft account</p>
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="form-error" role="alert">
+        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+          {% for error in form.username.errors %}
+            <span class="help-text" style="color:var(--red);">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">Password</label>
+        <div class="pw-wrap">
+          {{ form.password }}
+          <button class="pw-toggle" aria-label="Show password" tabindex="0"></button>
+        </div>
+        {% if form.password.errors %}
+          {% for error in form.password.errors %}
+            <span class="help-text" style="color:var(--red);">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top:0.5rem;">
+        Sign In
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="{% url 'register' %}">Create one free</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

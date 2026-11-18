@@ -1,0 +1,128 @@
+{% extends 'resume/base.html' %}
+{% load static %}
+
+{% block title %}{{ resume.full_name }} — Resume | ResumeCraft{% endblock %}
+{% block body_class %}{% endblock %}
+
+{% block content %}
+
+<!-- Fixed Preview Topbar -->
+<div class="preview-topbar no-print">
+  <div class="ptb-brand">
+    <div class="nav-logo" aria-hidden="true">R</div>
+    <span>ResumeCraft Preview</span>
+  </div>
+  <div class="preview-actions">
+    <a href="{% url 'review' %}" class="btn btn-outline" style="background:rgba(255,255,255,0.06); color:#f1f5f9; border-color:rgba(255,255,255,0.15);">
+      ← Back to Review
+    </a>
+    <a href="{% url 'download_docx' %}" class="btn" style="background:rgba(255,255,255,0.1); color:#f1f5f9; border:1px solid rgba(255,255,255,0.2);">
+      ↓ DOCX
+    </a>
+    <button onclick="window.print()" class="btn btn-primary" aria-label="Print or save as PDF">
+      ⎙ Print / Save PDF
+    </button>
+  </div>
+</div>
+
+<!-- A4 Resume Document -->
+<div class="preview-page">
+  <article class="resume-doc" aria-label="Resume document">
+
+    <!-- Header -->
+    <header class="rdoc-header">
+      <h1 class="rdoc-name">{{ resume.full_name }}</h1>
+      <div class="rdoc-contact">
+        {% if resume.email %}<span>{{ resume.email }}</span>{% endif %}
+        {% if resume.phone %}<span>{{ resume.phone }}</span>{% endif %}
+        {% if resume.address %}<span>{{ resume.address }}</span>{% endif %}
+      </div>
+      {% if resume.linkedin or resume.github %}
+      <div class="rdoc-links">
+        {% if resume.linkedin %}<a href="{{ resume.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
+        {% if resume.github %}<a href="{{ resume.github }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+      </div>
+      {% endif %}
+    </header>
+
+    <!-- Summary -->
+    {% if resume.summary %}
+    <section class="rdoc-section">
+      <h2 class="rdoc-section-title">Professional Summary</h2>
+      <p class="rdoc-item-desc">{{ resume.summary }}</p>
+    </section>
+    {% endif %}
+
+    <!-- Education -->
+    {% if resume.education.all %}
+    <section class="rdoc-section">
+      <h2 class="rdoc-section-title">Education</h2>
+      {% for edu in resume.education.all %}
+      <div class="rdoc-item">
+        <div class="rdoc-item-head">
+          <div>
+            <span class="rdoc-item-title">{{ edu.degree }}{% if edu.field %} in {{ edu.field }}{% endif %}</span>
+            <span class="rdoc-item-sub"> — {{ edu.institution }}</span>
+          </div>
+          <span class="rdoc-item-date">{{ edu.start_year }} – {{ edu.end_year }}</span>
+        </div>
+        {% if edu.grade %}<p class="rdoc-item-grade">Grade: {{ edu.grade }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- Experience -->
+    {% if resume.experience.all %}
+    <section class="rdoc-section">
+      <h2 class="rdoc-section-title">Professional Experience</h2>
+      {% for exp in resume.experience.all %}
+      <div class="rdoc-item">
+        <div class="rdoc-item-head">
+          <div>
+            <span class="rdoc-item-title">{{ exp.job_title }}</span>
+            <span class="rdoc-item-sub"> — {{ exp.company }}</span>
+          </div>
+          <span class="rdoc-item-date">{{ exp.start_date }} – {{ exp.end_date }}</span>
+        </div>
+        {% if exp.description %}<p class="rdoc-item-desc">{{ exp.description }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- Projects -->
+    {% if resume.projects.all %}
+    <section class="rdoc-section">
+      <h2 class="rdoc-section-title">Projects</h2>
+      {% for proj in resume.projects.all %}
+      <div class="rdoc-item">
+        <div class="rdoc-item-head">
+          <div>
+            <span class="rdoc-item-title">{{ proj.title }}</span>
+            {% if proj.technologies %}<span class="rdoc-item-sub"> — {{ proj.technologies }}</span>{% endif %}
+          </div>
+          {% if proj.project_url %}<a href="{{ proj.project_url }}" class="rdoc-item-date" target="_blank" rel="noopener" style="font-size:0.78rem; color:#4f46e5;">View Project ↗</a>{% endif %}
+        </div>
+        {% if proj.description %}<p class="rdoc-item-desc">{{ proj.description }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- Skills -->
+    {% if resume.skills.all %}
+    <section class="rdoc-section">
+      <h2 class="rdoc-section-title">Skills &amp; Expertise</h2>
+      <div class="rdoc-skills">
+        {% for skill in resume.skills.all %}
+        <span class="rdoc-skill-tag">{{ skill.name }}{% if skill.level %} · {{ skill.level }}{% endif %}</span>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+  </article>
+</div>
+
+{% endblock %}

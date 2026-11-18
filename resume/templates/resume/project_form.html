@@ -1,0 +1,87 @@
+{% extends 'resume/dashboard_base.html' %}
+
+{% block page_title %}Projects{% endblock %}
+{% block topbar_label %}Step 5 of 5{% endblock %}
+
+{% block dashboard_content %}
+<div class="form-page">
+
+  <div class="form-page-header">
+    <span class="section-label">Step 5 — Projects <span style="color:var(--text-3); font-weight:400;">(Optional)</span></span>
+    <h2>Projects &amp; Portfolio</h2>
+    <p>Showcase personal, academic, or open-source projects. This section is optional — skip to Review if you have none to add.</p>
+  </div>
+
+  <!-- Existing Projects -->
+  {% if entries %}
+  <div class="entry-list" aria-label="Projects added">
+    {% for proj in entries %}
+    <div class="entry-item">
+      <div class="entry-item-body">
+        <h4>{{ proj.title }}</h4>
+        <p>{{ proj.technologies }}</p>
+      </div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <a href="{% url 'edit_project' proj.pk %}" class="btn btn-outline btn-sm">Edit</a>
+        <form class="entry-delete-form" action="{% url 'delete_project' proj.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm" aria-label="Delete {{ proj.title }}">Remove</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Add Form -->
+  <div class="form-card">
+    <p class="section-label" style="margin-bottom:1rem;">Add a Project</p>
+    <form method="POST" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="form-error" role="alert">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Project Name</label>
+        {{ form.title }}
+        {% if form.title.errors %}<span class="help-text" style="color:var(--red);">{{ form.title.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.technologies.id_for_label }}">Technologies Used</label>
+        {{ form.technologies }}
+        {% if form.technologies.errors %}<span class="help-text" style="color:var(--red);">{{ form.technologies.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.project_url.id_for_label }}">Project Link <span class="optional">(optional)</span></label>
+        {{ form.project_url }}
+        <span class="help-text">GitHub repo, live demo, or any relevant URL.</span>
+        {% if form.project_url.errors %}<span class="help-text" style="color:var(--red);">{{ form.project_url.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">Description</label>
+        {{ form.description }}
+        <span class="help-text">What the project does, your role, and what you achieved.</span>
+        {% if form.description.errors %}<span class="help-text" style="color:var(--red);">{{ form.description.errors|join:" " }}</span>{% endif %}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" name="action" value="add" class="btn btn-outline btn-sm">+ Add Another</button>
+        <button type="submit" name="action" value="continue" class="btn btn-primary">
+          Save &amp; Go to Review →
+        </button>
+        <a href="{% url 'review' %}" class="btn btn-ghost">Skip — Go to Review →</a>
+      </div>
+    </form>
+  </div>
+
+  <div style="margin-top:1rem;">
+    <a href="{% url 'add_skill' %}" class="btn btn-ghost btn-sm">← Back to Skills</a>
+  </div>
+
+</div>
+{% endblock %}
